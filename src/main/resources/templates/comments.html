@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:include="~{/fragments/head}"></th:block>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+        <th:block th:include="~{/fragments/nav}"></th:block>
+    </nav>
+</header>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-5 col-md-6 col-12 pb-4">
+                <h1 class="black">Comments</h1>
+                <div th:each="c:${comments}" th:object="${c}"class="comment mt-4 text-justify float-left">
+                    <h4 th:text="|Author: *{writer}|"></h4> <br>
+                    <p th:text="*{content}"></p> <br>
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/comments/delete/{id}(id=*{id})}" class="btn btn-danger" >Delete</a>
+                    <a th:if="${c.writer==username}" th:href="@{/comments/delete/{id}(id=*{id})}" class="btn btn-danger" >Delete</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-5 col-sm-4 offset-md-1 offset-sm-1 col-12 mt-4">
+                <form th:action="@{/comments/item/(id=${id})}" method="POST" id="align-form">
+                    <div class="form-group">
+                        <h4>Leave a comment(max 150 char)</h4>
+                        <label for="message">Message</label>
+                        <textarea  required minlength="2" maxlength="150" name="content" id="message"  cols="30" rows="5" class="form-control" style="background-color: black;"></textarea>
+                    </div>
+                    <div class="form-group"> <button type="submit" id="post" class="btn">Post Comment</button> </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<footer class="footer bg-dark  py-2">
+    <th:block th:include="~{/fragments/footer}"></th:block>
+</footer>
+</body>
+</html>

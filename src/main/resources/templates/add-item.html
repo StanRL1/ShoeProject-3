@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{/fragments/head}"></th:block>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+        <th:block th:include="~{/fragments/nav}"></th:block>
+	</nav>
+</header>
+<main>
+    <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Add Item</span></h1>
+    <hr class="hr-3"/>
+    <form class="mx-auto w-25 bg-dark p-3 rounded text-center" th:action="@{/items/add}" method="POST"  th:object="${itemAddBindingModel}">
+        <div class="form-group">
+            <div class="text-white label-holder d-flex justify-content-center">
+                <label for="name" class="h4 mb-2">Name</label>
+            </div>
+            <input th:field="*{name}"
+                   th:errorclass="is-invalid"
+                   required minlength="3" maxlength="20"
+                    type="text" class="form-control" id="name" name="name" />
+            <small class="invalid-feedback text-danger">Name should be between 5 and 20 characters!</small>
+        </div>
+        <div class="form-group">
+
+            <label for="imgUrl" class="h4 mb-2">Image Url</label>
+            <input th:field="*{imgUrl}"
+                   th:errorclass="is-invalid"
+                   required
+                   minlength="5"
+                   name="imgUrl"
+                   id="imgUrl" type="text" class="form-control">
+            <small id="imageUrlError" class="invalid-feedback form-text bg-danger rounded">Image url must be more than 5
+                characters</small>
+        </div>
+        <div class="form-group">
+            <div   class="text-white label-holder d-flex justify-content-center">
+                <label for="description" class="h4 mb-2">Description</label>
+            </div>
+            <input th:field="*{description}" th:errorclass="is-invalid"
+                   required minlength="3" maxlength="20"
+                   type="text" class="form-control" id="description" name="description"/>
+            <small class="invalid-feedback text-danger">Incorrect description</small>
+        </div>
+        <div class="form-group">
+            <div class="text-white label-holder d-flex justify-content-center">
+                <label for="gender" class="h4 mb-2">Gender</label>
+            </div>
+            <select  th:field="*{gender}" th:errorclass="is-invalid" class="browser-default custom-select" id="gender" name="gender" >
+                <option th:each="a : ${T(project.model.entities.enums.Gender).values()}" th:value="${a}" th:text="${a}"></option>
+
+            </select>
+        </div>
+        <div class="form-group">
+            <div class="text-white label-holder d-flex justify-content-center">
+                <label for="price" class="h4 mb-2">Price</label>
+            </div>
+            <input th:field="*{price}" required min="0" th:errorclass="is-invalid" type="number" class="form-control" id="price" name="price"/>
+            <small class="invalid-feedback text-danger">Incorrect price!</small>
+        </div>
+        <div class="button-holder d-flex justify-content-center">
+            <button type="submit" class="btn btn-secondary text-white mb-3">Add Item</button>
+        </div>
+    </form>
+</main>
+<footer class="footer bg-dark  py-2">
+    <th:block th:include="~{/fragments/footer}"></th:block>
+</footer>
+</body>
+</html>

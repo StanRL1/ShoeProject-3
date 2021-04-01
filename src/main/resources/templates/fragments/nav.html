@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th:block>
+
+    <a sec:authorize="!isAuthenticated()" class="nav-link text-white active h5" href="/">Stilicha's</a>
+    <a sec:authorize="isAuthenticated()" class="nav-link text-white active h5" href="/home">Stilicha's</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div sec:authorize="hasRole('ROLE_ADMIN')" class="dropdown">
+        Hello, Admin
+    </div>
+
+    <div class="container collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
+        <ul class="navbar-nav row">
+            <li sec:authorize="isAuthenticated()" class="nav-item col-sm">
+                <a class="nav-link text-white active h6" href="/items/add">Add Item</a>
+            </li>
+            <li sec:authorize="isAuthenticated()" class="nav-item col-sm">
+                <a class="nav-link text-white active h6" href="/items/all">All Items</a>
+            </li>
+            <li sec:authorize="isAuthenticated()" class="nav-item col-sm">
+                <a class="nav-link text-white active h6" href="/items/my-items">My Items</a>
+            </li>
+            <li sec:authorize="!isAuthenticated()" class="nav-item col-sm">
+                <a class="nav-link text-white active h6"  th:href="@{/users/login}">Login</a>
+            </li>
+            <li sec:authorize="!isAuthenticated()" class="nav-item col-sm">
+                <a class="nav-link text-white active h6"    th:href="@{/users/register}" >Register</a>
+            </li>
+            <li sec:authorize="isAuthenticated()" class="nav-item col-sm">
+                <form th:action="@{/logout}" method="POST">
+                    <button type="submit" class="btn btn-light"  >
+                        Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</th:block>
