@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{/fragments/head}"></th:block>
+</head>
+<body>
+<header>
+    <nav class="navbar bg-dark navbar-expand-lg navbar-background bg-dark ">
+        <th:block th:include="~{/fragments/nav}"></th:block>
+    </nav>
+</header>
+<main>
+    <div class="mt-5 col-sm-12 my-auto align-self-center">
+        <img src="https://s.rfi.fr/media/display/616fa910-8e31-11eb-b95b-005056bf87d6/w:1280/p:16x9/2021-03-26T100818Z_1496802128_RC2YIM9H5K6L_RTRMADP_3_EGYPT-SUEZCANAL-SHIP-SATELLITE-IMAGES.webp" class="card-img-top" alt="Thumbnail [100%x225]"
+             data-holder-rendered="true"
+             style="height: 300px; width: 50%;">
+    <p class="blackwithbackground">
+        Ups... seems like а ship has blocked the resources :( <br/>
+        Are you sure this is the right canal you were looking for ?
+    </p>
+    </div>
+</main>
+<footer class="footer bg-dark  py-2">
+    <th:block th:include="~{/fragments/footer}"></th:block>
+</footer>
+</body>
+</html>

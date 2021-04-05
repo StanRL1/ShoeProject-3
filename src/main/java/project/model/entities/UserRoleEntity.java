@@ -2,7 +2,7 @@ package project.model.entities;
 
 
 import project.model.entities.enums.BaseEntity;
-import project.enums.UserRole;
+import project.model.entities.enums.UserRole;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

@@ -2,8 +2,11 @@ package project.web;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,6 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.model.bindings.UserRegistrationBindingModel;
 import project.model.services.UserRegistrationServiceModel;
+import project.model.services.UserServiceModel;
+import project.model.view.UserViewModel;
 import project.service.UserService;
 
 import javax.validation.Valid;
@@ -86,6 +91,15 @@ public class UserController {
         attributes.addFlashAttribute("username", username);
 
         return "redirect:/users/login";
+    }
+
+    @GetMapping("/profile")
+    public ModelAndView profile(ModelAndView modelAndView, @AuthenticationPrincipal UserDetails principal){
+        UserServiceModel userServiceModel=this.userService.findByUsername(principal.getUsername());
+        UserViewModel userViewModel=this.modelMapper.map(userServiceModel,UserViewModel.class);
+        modelAndView.addObject("user",userViewModel);
+        modelAndView.setViewName("profile");
+        return modelAndView;
     }
 
 }

@@ -1,11 +1,22 @@
 package project.model.view;
 
+import java.time.LocalDate;
+
 public class CommentViewModel {
     private Long id;
     private String content;
     private String writer;
+    private LocalDate localDate;
 
     public CommentViewModel() {
+    }
+
+    public LocalDate getLocalDate() {
+        return localDate;
+    }
+
+    public void setLocalDate(LocalDate localDate) {
+        this.localDate = localDate;
     }
 
     public Long getId() {

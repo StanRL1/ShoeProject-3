@@ -10,8 +10,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.model.entities.UserEntity;
 import project.model.entities.UserRoleEntity;
-import project.enums.UserRole;
+import project.model.entities.enums.UserRole;
 import project.model.services.UserRegistrationServiceModel;
+import project.model.services.UserServiceModel;
 import project.repository.UserRepository;
 import project.repository.UserRoleRepository;
 import project.service.UserService;
@@ -26,20 +27,19 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final ShoeShopUserService shoeShopUserService;
-    private final PasswordEncoder encoder;
     @Autowired
 
     public UserServiceImpl(UserRoleRepository userRoleRepository,
                            UserRepository userRepository,
                            PasswordEncoder passwordEncoder,
                            ModelMapper modelMapper,
-                           ShoeShopUserService shoeShopUserService, PasswordEncoder encoder) {
+                           ShoeShopUserService shoeShopUserService) {
         this.userRoleRepository = userRoleRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
         this.shoeShopUserService = shoeShopUserService;
-        this.encoder = encoder;
+
     }
     @Override
     public void registerAndLoginUser(UserRegistrationServiceModel serviceModel) {
@@ -78,6 +78,8 @@ public class UserServiceImpl implements UserService {
 
         UserEntity admin = new UserEntity().setUsername("admin").setFullname("Admin Adminov").setPassword(passwordEncoder.encode("topsecret"));
         UserEntity user = new UserEntity().setUsername("user").setFullname("Bai Ivan").setPassword(passwordEncoder.encode("topsecret"));
+        admin.setEmail("admin@admin.com");
+        user.setEmail("user@user.com");
         admin.setRoles(List.of(adminRole, userRole));
         user.setRoles(List.of(userRole));
 
@@ -86,11 +88,16 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public UserServiceModel findByUsername(String username) {
+        UserServiceModel userServiceModel= this.modelMapper.map(this.userRepository.findByUsername(username).get(),UserServiceModel.class);
+
+        return userServiceModel;
+    }
+
 
     @Override
     public boolean userNameExists(String username) {
-
-
         return this.userRepository.findByUsername(username).isPresent();
     }
 }

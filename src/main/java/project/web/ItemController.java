@@ -46,26 +46,17 @@ public class ItemController {
     @PostMapping("/add")
     public String modelAndView(@Valid ItemAddBindingModel itemAddBindingModel, BindingResult bindingResult,
                                      RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails principal){
-
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("itemAddBindingModel", itemAddBindingModel);
             redirectAttributes
                     .addFlashAttribute("org.springframework.validation.BindingResult.itemAddBindingModel", bindingResult);
-
-            return "redirect:add";
+            return "redirect:/items/add";
         }
-
          ItemServiceModel itemServiceModel = modelMapper.map(
                 itemAddBindingModel,
                 ItemServiceModel.class);
-
         itemServiceModel.setAddedBy(principal.getUsername());
-
-        System.out.println();
-
         itemService.createItem(itemServiceModel);
-
-
         return "redirect:/home";
     }
     @GetMapping("/all")

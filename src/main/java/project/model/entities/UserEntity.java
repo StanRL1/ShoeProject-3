@@ -3,6 +3,7 @@ package project.model.entities;
 import project.model.entities.enums.BaseEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +18,10 @@ public class UserEntity extends BaseEntity {
     private String password;
 
     @Column(nullable = false)
-    private String fullname;
+    private String email;
 
+    @Column(nullable = false)
+    private String fullname;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<UserRoleEntity> roles = new ArrayList<>();
 
@@ -61,5 +64,13 @@ public class UserEntity extends BaseEntity {
     public UserEntity addRole(UserRoleEntity roleEntity) {
         this.roles.add(roleEntity);
         return this;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

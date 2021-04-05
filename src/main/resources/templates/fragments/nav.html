@@ -32,6 +32,11 @@
             <li sec:authorize="!isAuthenticated()" class="nav-item col-sm">
                 <a class="nav-link text-white active h6"    th:href="@{/users/register}" >Register</a>
             </li>
+            <a sec:authorize="isAuthenticated()" class="navbar-brand" th:href="@{/users/profile}">
+                <div class="logo-image">
+                    <img src="https://i2.wp.com/assets.codepen.io/internal/avatars/users/default.png?ssl=1" class="img-fluid">
+                </div>
+            </a>
             <li sec:authorize="isAuthenticated()" class="nav-item col-sm">
                 <form th:action="@{/logout}" method="POST">
                     <button type="submit" class="btn btn-light"  >

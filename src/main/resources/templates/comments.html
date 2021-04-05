@@ -16,7 +16,7 @@
             <div class="col-sm-5 col-md-6 col-12 pb-4">
                 <h1 class="black">Comments</h1>
                 <div th:each="c:${comments}" th:object="${c}"class="comment mt-4 text-justify float-left">
-                    <h4 th:text="|Author: *{writer}|"></h4> <br>
+                    <h4 th:text="|Author: *{writer}|"></h4> <span th:text="*{localDate}"></span> <br>
                     <p th:text="*{content}"></p> <br>
                     <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/comments/delete/{id}(id=*{id})}" class="btn btn-danger" >Delete</a>
                     <a th:if="${c.writer==username}" th:href="@{/comments/delete/{id}(id=*{id})}" class="btn btn-danger" >Delete</a>

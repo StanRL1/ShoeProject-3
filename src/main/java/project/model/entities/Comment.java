@@ -2,7 +2,10 @@ package project.model.entities;
 import project.model.entities.enums.BaseEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name="comments")
@@ -14,8 +17,18 @@ public class Comment extends BaseEntity {
     private String writer;
     @ManyToOne
     private Item item;
+    @FutureOrPresent
+    private LocalDate localDate;
 
     public Comment() {
+    }
+
+    public LocalDate getLocalDate() {
+        return localDate;
+    }
+
+    public void setLocalDate(LocalDate localDate) {
+        this.localDate = localDate;
     }
 
     public String getContent() {

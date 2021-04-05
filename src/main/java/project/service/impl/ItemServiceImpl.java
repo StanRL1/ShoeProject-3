@@ -29,8 +29,6 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void createItem(ItemServiceModel itemServiceModel) {
         Item item=this.modelMapper.map(itemServiceModel,Item.class);
-        System.out.println();
-
         this.itemRepository.saveAndFlush(item);
     }
 

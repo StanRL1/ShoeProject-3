@@ -17,7 +17,7 @@ public class ItemAddBindingModel {
     @NotNull
     private String imgUrl;
     @NotNull
-    @Size(min=3,max=150)
+    @Size(min=5,max=150)
     private String description;
     @Enumerated(EnumType.STRING)
     private Gender gender;

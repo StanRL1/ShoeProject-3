@@ -5,11 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import project.model.entities.Item;
+import project.model.entities.enums.Gender;
 import project.model.services.ItemServiceModel;
 import project.repository.ItemRepository;
 import project.service.FrontPageService;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,7 +32,18 @@ public class FrontPageServiceImpl implements FrontPageService {
     @PostConstruct
     public void afterInit(){
         if(this.itemRepository.findAllimgUrl().size()<3){
-            throw new IllegalArgumentException("Not enough offers :(");
+            Item item1= new Item();
+            item1.setId(1);
+            item1.setPrice(BigDecimal.valueOf(235));
+            item1.setGender(Gender.MALE);
+            item1.setDescription("Best Shoe Ever");
+            item1.setAddedBy("admin");
+            item1.setName("Air Max");
+            item1.setImgUrl("https://www.shooos.bg/media/catalog/product/cache/20/image/9df78eab33525d08d6e5fb8d27136e95/n/i/nike-air-force-1-flyknit-2.0-av3042-0011.jpg");
+            itemRepository.saveAndFlush(item1);
+            if(itemRepository.findAllimgUrl().size()<3){
+                throw new IllegalArgumentException("not enough offers");
+            }
         }
     }
 

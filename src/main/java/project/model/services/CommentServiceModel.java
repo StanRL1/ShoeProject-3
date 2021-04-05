@@ -1,7 +1,10 @@
 package project.model.services;
 
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
+import java.util.Date;
 
 public class CommentServiceModel {
     private Long id;
@@ -11,8 +14,19 @@ public class CommentServiceModel {
     private String writer;
     @NotNull
     private Long itemId;
+    @NotNull
+    @FutureOrPresent
+    private LocalDate localDate;
 
     public CommentServiceModel() {
+    }
+
+    public LocalDate getLocalDate() {
+        return localDate;
+    }
+
+    public void setLocalDate(LocalDate localDate) {
+        this.localDate = localDate;
     }
 
     public Long getId() {

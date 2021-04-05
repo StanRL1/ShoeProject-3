@@ -1,4 +1,4 @@
-package project.enums;
+package project.model.entities.enums;
 
 public enum UserRole {
     ADMIN,

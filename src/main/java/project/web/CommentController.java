@@ -14,6 +14,7 @@ import project.model.view.CommentViewModel;
 import project.service.CommentService;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +38,6 @@ public class CommentController {
                     CommentViewModel commentViewModel=this.modelMapper.map(comment,CommentViewModel.class);
                     return commentViewModel;
                 }).collect(Collectors.toList());
-        System.out.println();
         modelAndView.addObject("comments",commentViewModelList);
         modelAndView.setViewName("comments");
         modelAndView.addObject("username",principal.getUsername());
@@ -54,6 +54,7 @@ public class CommentController {
         CommentServiceModel commentServiceModel=this.modelMapper.map(commentBindingModel,CommentServiceModel.class);
         commentServiceModel.setItemId(id);
         commentServiceModel.setWriter(principal.getUsername());
+        commentServiceModel.setLocalDate(LocalDate.now());
         System.out.println();
         this.commentService.addComment(commentServiceModel);
 

@@ -30,7 +30,6 @@ public class ItemRestController {
         List<ItemViewModel> itemViewModels=this.itemService.findAllItems().stream().map(item->{
             return this.modelMapper.map(item,ItemViewModel.class);
         }).collect(Collectors.toList());
-        System.out.println();
         return ResponseEntity.ok().body(itemViewModels);
     }
 }
