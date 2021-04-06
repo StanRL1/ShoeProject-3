@@ -12,4 +12,6 @@ public interface CommentService {
     void deleteById(Long id);
 
     CommentServiceModel findById(Long id);
+
+    void deleteCommentsByItemId(Long id);
 }

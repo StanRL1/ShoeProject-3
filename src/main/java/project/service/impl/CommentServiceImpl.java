@@ -27,6 +27,8 @@ public class CommentServiceImpl implements CommentService {
         this.itemRepository = itemRepository;
     }
 
+
+
     @Override
     public List<CommentServiceModel> findCommentsById(Long id) {
         List<CommentServiceModel> commentServiceModels=this.commentRepository.findAllByItemId(id).stream().
@@ -60,5 +62,14 @@ public class CommentServiceImpl implements CommentService {
         commentServiceModel.setItemId(comment.getItem().getId());
 
         return commentServiceModel;
+    }
+
+    @Override
+    public void deleteCommentsByItemId(Long id) {
+        if(this.commentRepository.findAllByItemId(id).size()>0)
+            this.commentRepository.findAllByItemId(id).stream().map(comment -> {
+            this.commentRepository.deleteById(comment.getId());
+            return null;
+        });
     }
 }

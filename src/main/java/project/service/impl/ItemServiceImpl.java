@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.model.entities.Item;
 import project.model.services.ItemServiceModel;
+import project.repository.CommentRepository;
 import project.repository.ItemRepository;
 import project.repository.UserRepository;
+import project.service.CommentService;
 import project.service.ItemService;
 
 import java.util.List;
@@ -16,13 +18,15 @@ import java.util.stream.Collectors;
 public class ItemServiceImpl implements ItemService {
     private final ModelMapper modelMapper;
     private final ItemRepository itemRepository;
+    private final CommentService commentService;
     private final UserRepository userRepository;
     @Autowired
 
-    public ItemServiceImpl(ModelMapper modelMapper, ItemRepository itemRepository, UserRepository userRepository) {
+    public ItemServiceImpl(ModelMapper modelMapper, ItemRepository itemRepository, UserRepository userRepository,CommentService commentService) {
         this.modelMapper = modelMapper;
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
+        this.commentService=commentService;
     }
 
 
@@ -52,6 +56,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void deleteById(Long id) {
         this.itemRepository.deleteById(id);
+       // this.commentService.deleteCommentsByItemId(id);
     }
 
     @Override

@@ -11,6 +11,7 @@ import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 public class ItemServiceModel {
+    @NotNull
     private Long id;
     @NotNull
     @Size(min=3,max=20)

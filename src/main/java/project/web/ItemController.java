@@ -75,9 +75,7 @@ public class ItemController {
     @GetMapping("/my-items")
     public ModelAndView myItems(ModelAndView modelAndView,@AuthenticationPrincipal UserDetails principal){
 
-        List<ItemViewModel> itemViewModelList=this.itemService.findAllItemsForUser(principal.getUsername()).stream().map(item->{
-            return this.modelMapper.map(item,ItemViewModel.class);
-        }).collect(Collectors.toList()); ;
+        List<ItemViewModel> itemViewModelList=this.itemService.findAllItemsForUser(principal.getUsername()).stream().map(item-> this.modelMapper.map(item,ItemViewModel.class)).collect(Collectors.toList()); ;
         modelAndView.setViewName("my-items");
         modelAndView.addObject("count",itemViewModelList.size());
         modelAndView.addObject("items",itemViewModelList);
@@ -89,7 +87,6 @@ public class ItemController {
         modelAndView.addObject("item",this.modelMapper.map(this.itemService.findById(id),ItemViewModel.class));
         modelAndView.setViewName("details-item");
         modelAndView.addObject("username",principal.getUsername());
-        System.out.println();
         return modelAndView;
     }
 
@@ -98,7 +95,6 @@ public class ItemController {
         modelAndView.addObject("item",this.modelMapper.map(this.itemService.findById(id),ItemViewModel.class));
         modelAndView.setViewName("details-item");
         modelAndView.addObject("username",principal.getUsername());
-        System.out.println();
         return modelAndView;
     }
     @GetMapping("/delete/{id}")
@@ -106,7 +102,7 @@ public class ItemController {
         this.itemService.deleteById(id);
         this.frontPageService.reload();
 
-        return "redirect:/items/my-items";
+            return "redirect:/items/my-items";
     }
 
 }

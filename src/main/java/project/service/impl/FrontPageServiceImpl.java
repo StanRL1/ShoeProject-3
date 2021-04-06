@@ -41,7 +41,29 @@ public class FrontPageServiceImpl implements FrontPageService {
             item1.setName("Air Max");
             item1.setImgUrl("https://www.shooos.bg/media/catalog/product/cache/20/image/9df78eab33525d08d6e5fb8d27136e95/n/i/nike-air-force-1-flyknit-2.0-av3042-0011.jpg");
             itemRepository.saveAndFlush(item1);
-            if(itemRepository.findAllimgUrl().size()<3){
+
+            Item item2= new Item();
+            item2.setId(2);
+            item2.setPrice(BigDecimal.valueOf(234));
+            item2.setGender(Gender.MALE);
+            item2.setDescription("Best Shoe Ever");
+            item2.setAddedBy("admin");
+            item2.setName("Air Max");
+            item2.setImgUrl("https://www.shooos.bg/media/catalog/product/cache/20/image/9df78eab33525d08d6e5fb8d27136e95/n/i/nike-air-force-1-flyknit-2.0-av3042-0011.jpg");
+            itemRepository.saveAndFlush(item2);
+
+            Item item3=new Item();
+            item3.setImgUrl("https://www.shooos.bg/media/catalog/product/cache/20/image/9df78eab33525d08d6e5fb8d27136e95/n/i/nike-air-force-1-flyknit-2.0-av3042-0011.jpg");
+            item3.setName("Air ForceFlyknit");
+            item3.setAddedBy("admin");
+            item3.setDescription("You will fall in love with this shoe");
+            item3.setGender(Gender.FEMALE);
+            item3.setPrice(BigDecimal.valueOf(200));
+            item3.setId(3);
+            this.itemRepository.saveAndFlush(item3);
+            items=itemRepository.findAll();
+            System.out.println();
+            if(items.size()<3){
                 throw new IllegalArgumentException("not enough offers");
             }
         }

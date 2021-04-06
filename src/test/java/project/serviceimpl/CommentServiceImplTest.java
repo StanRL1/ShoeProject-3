@@ -111,6 +111,13 @@ public class CommentServiceImplTest {
 
 
     }
+    @Test
+    public void testDeleteByItemId(){
+        this.mockCommentRepository.saveAndFlush(comment1);
+        serviceToTest.deleteCommentsByItemId(Long.valueOf(1));
+        Assertions.assertEquals(0, mockCommentRepository.count());
+
+    }
 
 
 }

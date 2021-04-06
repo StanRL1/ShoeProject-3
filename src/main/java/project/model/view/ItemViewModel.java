@@ -2,15 +2,28 @@ package project.model.view;
 
 import project.model.entities.enums.Gender;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 public class ItemViewModel {
+    @NotNull
     private Long id;
+    @NotNull
+    @Size(min=3,max=20)
     private String imgUrl;
+    @NotNull
+    @Size(min=3,max=20)
     private String name;
+    @DecimalMin("0")
     private BigDecimal price;
+    @NotNull
     private Gender gender;
+    @NotNull
+    @Size(min=3,max=150)
     private String description;
+    @NotNull
     private String addedBy;
 
     public ItemViewModel() {

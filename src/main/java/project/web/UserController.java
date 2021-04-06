@@ -1,12 +1,13 @@
 package project.web;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,6 +27,7 @@ import javax.validation.Valid;
 @RequestMapping("/users")
 public class UserController {
 
+    private Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final ModelMapper modelMapper;
     private final UserService userService;
     @Autowired
@@ -43,6 +45,11 @@ public class UserController {
 
     @GetMapping("/login")
     public String login(){
+        LOGGER.info("LOG1");
+        LOGGER.info("LOG2");
+        LOGGER.info("LOG3");
+        LOGGER.info("LOG4");
+
         return "login";
     }
 
@@ -58,7 +65,6 @@ public class UserController {
             RedirectAttributes redirectAttributes) {
 
         this.userService.seedUsers();
-        System.out.println();
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("registrationBindingModel", registrationBindingModel);
             redirectAttributes.addFlashAttribute(

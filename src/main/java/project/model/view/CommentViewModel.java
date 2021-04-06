@@ -1,11 +1,19 @@
 package project.model.view;
 
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 public class CommentViewModel {
+    @NotNull
     private Long id;
+    @NotNull
+    @Size(min=1,max=150)
     private String content;
     private String writer;
+    @NotNull
+    @FutureOrPresent
     private LocalDate localDate;
 
     public CommentViewModel() {

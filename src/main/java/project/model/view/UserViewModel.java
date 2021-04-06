@@ -2,14 +2,17 @@ package project.model.view;
 
 import project.model.entities.UserRoleEntity;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class UserViewModel {
-
+    @NotNull
     private String username;
-
+    @NotNull
+    @Email
     private String email;
+    @NotNull
     private String fullname;
 
     private List<UserRoleEntity> roles;

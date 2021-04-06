@@ -13,6 +13,7 @@ import project.model.entities.enums.Gender;
 import project.model.services.ItemServiceModel;
 import project.repository.ItemRepository;
 import project.repository.UserRepository;
+import project.service.impl.CommentServiceImpl;
 import project.service.impl.ItemServiceImpl;
 
 import java.math.BigDecimal;
@@ -25,9 +26,10 @@ import static org.mockito.Mockito.when;
 public class ItemServiceImplTest {
 
     private ItemServiceImpl serviceToTest;
-
+    private CommentServiceImpl commentService;
     private Item item1,item2;
     private UserEntity user1,user2;
+
 
     @Mock
     ItemRepository mockItemRepository;
@@ -59,7 +61,7 @@ public class ItemServiceImplTest {
         user2=new UserEntity();
         user2.setUsername("user2");
 
-        serviceToTest=new ItemServiceImpl(new ModelMapper(),mockItemRepository,mockUserRepository);
+        serviceToTest=new ItemServiceImpl(new ModelMapper(),mockItemRepository,mockUserRepository,commentService);
 
     }
     @Test

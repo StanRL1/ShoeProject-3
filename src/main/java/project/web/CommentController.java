@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("comments")
+@RequestMapping("/comments")
 public class CommentController {
 
     private final CommentService commentService;
@@ -43,13 +43,13 @@ public class CommentController {
         modelAndView.addObject("username",principal.getUsername());
         return modelAndView;
     }
-    @PostMapping("/item/")
+    @PostMapping("/item")
     public String addComment(@Valid @ModelAttribute("commentBindingModel")CommentBindingModel commentBindingModel, BindingResult bindingResult,
                              @RequestParam("id") Long id, @AuthenticationPrincipal UserDetails principal)
 
     {
         if(bindingResult.hasErrors()){
-            return ("redirect:/comments/item/"+"id");
+            return ("redirect:/comments/item/"+id);
         }
         CommentServiceModel commentServiceModel=this.modelMapper.map(commentBindingModel,CommentServiceModel.class);
         commentServiceModel.setItemId(id);
