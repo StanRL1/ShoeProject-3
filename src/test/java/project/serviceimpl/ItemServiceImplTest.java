@@ -11,8 +11,10 @@ import project.model.entities.Item;
 import project.model.entities.UserEntity;
 import project.model.entities.enums.Gender;
 import project.model.services.ItemServiceModel;
+import project.repository.BrandRepository;
 import project.repository.ItemRepository;
 import project.repository.UserRepository;
+import project.service.BrandService;
 import project.service.impl.CommentServiceImpl;
 import project.service.impl.ItemServiceImpl;
 
@@ -29,8 +31,7 @@ public class ItemServiceImplTest {
     private CommentServiceImpl commentService;
     private Item item1,item2;
     private UserEntity user1,user2;
-
-
+    private BrandService brandService;
     @Mock
     ItemRepository mockItemRepository;
     @Mock
@@ -61,7 +62,7 @@ public class ItemServiceImplTest {
         user2=new UserEntity();
         user2.setUsername("user2");
 
-        serviceToTest=new ItemServiceImpl(new ModelMapper(),mockItemRepository,mockUserRepository,commentService);
+        serviceToTest=new ItemServiceImpl(new ModelMapper(),mockItemRepository,mockUserRepository,commentService,brandService);
 
     }
     @Test

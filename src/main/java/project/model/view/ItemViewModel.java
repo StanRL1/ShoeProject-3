@@ -1,5 +1,6 @@
 package project.model.view;
 
+import project.model.entities.Brand;
 import project.model.entities.enums.Gender;
 
 import javax.validation.constraints.DecimalMin;
@@ -25,8 +26,18 @@ public class ItemViewModel {
     private String description;
     @NotNull
     private String addedBy;
+    @NotNull
+    private Brand brand;
 
     public ItemViewModel() {
+    }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
     }
 
     public Long getId() {

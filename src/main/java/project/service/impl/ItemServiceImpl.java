@@ -3,11 +3,14 @@ package project.service.impl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import project.model.entities.Brand;
 import project.model.entities.Item;
 import project.model.services.ItemServiceModel;
+import project.repository.BrandRepository;
 import project.repository.CommentRepository;
 import project.repository.ItemRepository;
 import project.repository.UserRepository;
+import project.service.BrandService;
 import project.service.CommentService;
 import project.service.ItemService;
 
@@ -20,19 +23,31 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final CommentService commentService;
     private final UserRepository userRepository;
+    private final BrandService brandService;
     @Autowired
 
-    public ItemServiceImpl(ModelMapper modelMapper, ItemRepository itemRepository, UserRepository userRepository,CommentService commentService) {
+    public ItemServiceImpl(ModelMapper modelMapper, ItemRepository itemRepository, UserRepository userRepository,CommentService commentService,BrandService brandService) {
         this.modelMapper = modelMapper;
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
         this.commentService=commentService;
+        this.brandService=brandService;
     }
 
 
     @Override
     public void createItem(ItemServiceModel itemServiceModel) {
         Item item=this.modelMapper.map(itemServiceModel,Item.class);
+
+        Brand brand=this.brandService.findByUsername("Nike");
+        if(brand!=null){
+            item.setBrand(brand);
+        }else{
+            brand=new Brand();
+            brand.setName("Nike");
+            item.setBrand(brand);
+        }
+
         this.itemRepository.saveAndFlush(item);
     }
 

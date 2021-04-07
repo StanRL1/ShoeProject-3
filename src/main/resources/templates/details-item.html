@@ -20,7 +20,7 @@
                 <img class="card-img-top" th:src="*{imgUrl}" alt="Card image cap">
                 <div class="card-body bg-gray align-content-center text-center">
 
-                    <h5 class="card-text">Brand: Nike</h5>
+                    <h5 th:text="|Brand: *{brand.name}|" class="card-text"></h5>
                     <h5 th:text="|Model: *{name}|" class="card-text"></h5>
                     <h5 th:text="|Seller: *{addedBy}|" class="card-text"></h5>
                     <h5 th:text="|Description: *{description}|" class="card-text"></h5>

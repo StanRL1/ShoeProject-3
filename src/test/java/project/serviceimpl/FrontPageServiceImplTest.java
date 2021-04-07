@@ -7,6 +7,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import project.model.entities.Item;
 import project.model.entities.enums.Gender;
+import project.repository.BrandRepository;
 import project.repository.ItemRepository;
 import project.service.impl.FrontPageServiceImpl;
 
@@ -20,6 +21,8 @@ public class FrontPageServiceImplTest {
     private FrontPageServiceImpl serviceToTest;
 
     Item item1,item2,item3;
+    @Mock
+    private BrandRepository mockBrandRepository;
     @Mock
     ItemRepository mockItemRepo;
     @Mock
@@ -53,7 +56,7 @@ public class FrontPageServiceImplTest {
         item3.setPrice(BigDecimal.TEN);
         item3.setId(3);
 
-        serviceToTest=new FrontPageServiceImpl(mockItemRepo,new ModelMapper());
+        serviceToTest=new FrontPageServiceImpl(mockItemRepo,new ModelMapper(),mockBrandRepository);
 
     }
 

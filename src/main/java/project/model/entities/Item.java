@@ -27,8 +27,18 @@ public class Item extends BaseEntity {
     private String addedBy;
     @Column(name="image_url",nullable = false)
     private String imgUrl;
+    @ManyToOne
+    private Brand brand;
 
     public Item() {
+    }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
     }
 
     public String getName() {

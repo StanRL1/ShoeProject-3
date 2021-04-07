@@ -1,6 +1,8 @@
 package project.web;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +27,12 @@ public class ItemController {
     private final ModelMapper modelMapper;
     private final ItemService itemService;
     private final FrontPageService frontPageService;
+    private Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+
+
     @Autowired
+
+
 
     public ItemController(ModelMapper modelMapper, ItemService itemService, FrontPageService frontPageService) {
         this.modelMapper = modelMapper;
@@ -57,6 +64,8 @@ public class ItemController {
                 ItemServiceModel.class);
         itemServiceModel.setAddedBy(principal.getUsername());
         itemService.createItem(itemServiceModel);
+
+        LOGGER.info(String.valueOf(itemService.findAllItems().size()));
         return "redirect:/home";
     }
     @GetMapping("/all")

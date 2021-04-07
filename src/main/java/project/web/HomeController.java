@@ -31,6 +31,7 @@ public class HomeController {
     @GetMapping("/home")
     public String home(Model model) {
         this.frontPageService.reload();
+        System.out.println();
         model.addAttribute("firstItem",this.modelMapper.map(frontPageService.firstImage(), ItemViewModel.class));
         model.addAttribute("secondItem",this.modelMapper.map(frontPageService.secondImage(), ItemViewModel.class));
         model.addAttribute("thirdItem",this.modelMapper.map(frontPageService.thirdImage(), ItemViewModel.class));

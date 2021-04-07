@@ -1,5 +1,6 @@
 package project.model.services;
 
+import project.model.entities.Brand;
 import project.model.entities.enums.Gender;
 
 import javax.persistence.Column;
@@ -26,9 +27,19 @@ public class ItemServiceModel {
     @DecimalMin("0")
     private BigDecimal price;
     private String addedBy;
+    @NotNull
+    private Brand brand;
 
     public ItemServiceModel() {
 
+    }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
     }
 
     public Long getId() {

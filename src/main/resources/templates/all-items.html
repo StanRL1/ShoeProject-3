@@ -30,7 +30,7 @@
                              style="height: 225px; width: 100%; display: block;">
                     </div>
                     <div class="card-body pb-1">
-                    <h5 class="card-title text-center" >Brand: Nike</h5>
+                    <h5 th:text="|Brand: *{brand.getName()}|" class="card-title text-center" ></h5>
                     </div>
                     <div class="card-body pb-1">
                         <h5 th:text="|Model: *{name}|" class="card-title text-center" >Item name</h5>
