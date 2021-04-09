@@ -14,10 +14,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.model.bindings.ItemAddBindingModel;
 import project.model.services.ItemServiceModel;
 import project.model.view.ItemViewModel;
+import project.service.CartService;
 import project.service.FrontPageService;
 import project.service.ItemService;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +30,7 @@ public class ItemController {
     private final ModelMapper modelMapper;
     private final ItemService itemService;
     private final FrontPageService frontPageService;
+    private final CartService cartService;
     private Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
 
@@ -34,10 +38,11 @@ public class ItemController {
 
 
 
-    public ItemController(ModelMapper modelMapper, ItemService itemService, FrontPageService frontPageService) {
+    public ItemController(ModelMapper modelMapper, ItemService itemService, FrontPageService frontPageService, CartService cartService) {
         this.modelMapper = modelMapper;
         this.itemService = itemService;
         this.frontPageService = frontPageService;
+        this.cartService = cartService;
     }
 
     @ModelAttribute("itemAddBindingModel")
@@ -110,8 +115,24 @@ public class ItemController {
     public String delete(@PathVariable("id") Long id){
         this.itemService.deleteById(id);
         this.frontPageService.reload();
+        this.frontPageService.init();
 
             return "redirect:/items/my-items";
     }
+    @GetMapping("/addToCart/{id}")
+    public String addToCart(@PathVariable("id") Long id, HttpSession session){
+        cartService.addToCart(id,session);
+        return "redirect:/users/profile";
+    }
+    @GetMapping("/buy/{id}")
+    public String buyItem(@PathVariable("id") Long id, HttpSession session){
+        cartService.delete(id,session);
+        return "redirect:/users/profile";
+    }
 
+    @GetMapping("/buyAll")
+    public String buyAll(HttpSession session){
+        cartService.deleteAll(session);
+        return "redirect:/users/profile";
+    }
 }

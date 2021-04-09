@@ -7,6 +7,7 @@ import java.util.List;
 public interface ItemService {
     void createItem(ItemServiceModel itemServiceModel);
     List<ItemServiceModel> findAllItems();
+
     ItemServiceModel findById(Long id);
 
     void deleteById(Long id);

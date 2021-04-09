@@ -2,12 +2,14 @@ package project.service.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import project.exeptions.ObjectNotFoundException;
 import project.model.entities.UserEntity;
 import project.model.entities.UserRoleEntity;
 import project.model.entities.enums.UserRole;
@@ -47,8 +49,7 @@ public class UserServiceImpl implements UserService {
         newUser.setPassword(passwordEncoder.encode(serviceModel.getPassword()));
 
         UserRoleEntity userRole = userRoleRepository.
-                findByRole(UserRole.USER).orElseThrow(
-                () -> new IllegalStateException("USER role not found. Please seed the roles."));
+                findByRole(UserRole.USER).orElseThrow(ObjectNotFoundException::new);
 
         newUser.addRole(userRole);
 
@@ -66,9 +67,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Async
     public void seedUsers() {
 
-        System.out.println();
         if (this.userRepository.count() == 0) {
 
         UserRoleEntity adminRole = new UserRoleEntity().setRole(UserRole.ADMIN);
@@ -90,7 +91,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserServiceModel findByUsername(String username) {
-        UserServiceModel userServiceModel= this.modelMapper.map(this.userRepository.findByUsername(username).get(),UserServiceModel.class);
+        UserServiceModel userServiceModel= this.modelMapper.map(this.userRepository.findByUsername(username).orElseThrow(ObjectNotFoundException::new),UserServiceModel.class);
 
         return userServiceModel;
     }

@@ -8,4 +8,5 @@ public interface FrontPageService {
     public ItemServiceModel secondImage();
     public ItemServiceModel thirdImage();
     public void reload();
+    public void init();
 }

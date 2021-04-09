@@ -55,7 +55,6 @@ public class CommentController {
         commentServiceModel.setItemId(id);
         commentServiceModel.setWriter(principal.getUsername());
         commentServiceModel.setLocalDate(LocalDate.now());
-        System.out.println();
         this.commentService.addComment(commentServiceModel);
 
         return ("redirect:/comments/item/"+id);

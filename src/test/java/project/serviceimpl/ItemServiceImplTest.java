@@ -137,13 +137,7 @@ public class ItemServiceImplTest {
 
     }
 
-    @Test
-    public void testAddItem(){
-        ItemServiceModel itemServiceModel=new ModelMapper().map(item1,ItemServiceModel.class);
-        serviceToTest.createItem(itemServiceModel);
-        Assertions.assertEquals(0,mockItemRepository.count());
 
-    }
 
 
 }

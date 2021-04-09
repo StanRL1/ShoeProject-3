@@ -2,8 +2,10 @@ package project.service.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import project.exeptions.ObjectNotFoundException;
 import project.model.entities.Brand;
 import project.model.entities.Item;
 import project.model.entities.enums.Gender;
@@ -36,10 +38,12 @@ public class FrontPageServiceImpl implements FrontPageService {
     @PostConstruct
     public void afterInit(){
         if(this.itemRepository.findAllimgUrl().size()<3){
-            Brand brand=new Brand();
-            brand.setName("Nike");
-            this.brandRepository.saveAndFlush(brand);
-            System.out.println();
+            Brand brand = new Brand();
+            if(brandRepository.findAll().size()<1) {
+                brand.setName("Nike");
+                this.brandRepository.saveAndFlush(brand);
+
+            }
             Item item1= new Item();
             item1.setId(1);
             item1.setPrice(BigDecimal.valueOf(235));
@@ -47,8 +51,8 @@ public class FrontPageServiceImpl implements FrontPageService {
             item1.setDescription("Best Shoe Ever");
             item1.setAddedBy("admin");
             item1.setName("Air Max");
-            item1.setBrand(this.brandRepository.findByName("Nike").get());
-            item1.setImgUrl("https://www.shooos.bg/media/catalog/product/cache/20/image/9df78eab33525d08d6e5fb8d27136e95/n/i/nike-air-force-1-flyknit-2.0-av3042-0011.jpg");
+            item1.setBrand(this.brandRepository.findByName("Nike").orElseThrow(ObjectNotFoundException::new));
+            item1.setImgUrl("https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/5b337ffe-0fda-42d5-8fa7-fc9511987930/air-max-97-womens-shoe-XD9m01.png");
             itemRepository.saveAndFlush(item1);
 
             Item item2= new Item();
@@ -57,14 +61,14 @@ public class FrontPageServiceImpl implements FrontPageService {
             item2.setGender(Gender.MALE);
             item2.setDescription("Best Shoe Ever");
             item2.setAddedBy("admin");
-            item2.setName("Air Max");
+            item2.setName("Air Max 90");
             item2.setBrand(this.brandRepository.findByName("Nike").get());
-            item2.setImgUrl("https://www.shooos.bg/media/catalog/product/cache/20/image/9df78eab33525d08d6e5fb8d27136e95/n/i/nike-air-force-1-flyknit-2.0-av3042-0011.jpg");
+            item2.setImgUrl("https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/73e3275e-c0a9-4556-9383-cd95fb09ed87/air-max-90-shoe-wV1m7n.png");
             itemRepository.saveAndFlush(item2);
 
             Item item3=new Item();
-            item3.setImgUrl("https://www.shooos.bg/media/catalog/product/cache/20/image/9df78eab33525d08d6e5fb8d27136e95/n/i/nike-air-force-1-flyknit-2.0-av3042-0011.jpg");
-            item3.setName("Air ForceFlyknit");
+            item3.setImgUrl("https://www.obuvki.bg/media/catalog/product/cache/image/650x650/0/0/0000199870750_1__jf.jpg");
+            item3.setName("Air ForceFlyknit Mid");
             item3.setAddedBy("admin");
             item3.setDescription("You will fall in love with this shoe");
             item3.setGender(Gender.FEMALE);
@@ -82,7 +86,6 @@ public class FrontPageServiceImpl implements FrontPageService {
 
     @Override
     public ItemServiceModel firstImage() {
-        System.out.println();
         Item itemServiceModel=this.items.get(0);
         return this.modelMapper.map(itemServiceModel,ItemServiceModel.class);
     }
@@ -104,5 +107,10 @@ public class FrontPageServiceImpl implements FrontPageService {
     @Override
     public void reload(){
         this.items=this.itemRepository.findAll();
+    }
+
+    @Override
+    public void init() {
+        afterInit();
     }
 }

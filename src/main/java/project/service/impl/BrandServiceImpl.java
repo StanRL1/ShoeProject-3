@@ -2,6 +2,7 @@ package project.service.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import project.exeptions.ObjectNotFoundException;
 import project.model.entities.Brand;
 import project.model.services.BrandServiceModel;
 import project.repository.BrandRepository;
@@ -20,7 +21,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Brand findByUsername(String username) {
-        return this.brandRepository.findByName(username).orElse(null);
+        return this.brandRepository.findByName(username).orElseThrow(ObjectNotFoundException::new);
     }
 
     @Override

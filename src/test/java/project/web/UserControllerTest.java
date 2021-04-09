@@ -54,7 +54,6 @@ public class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(value = "pesho", roles = {"USER", "ADMIN"})
     void testLogin() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(
                 USER_CONTROLLER_PREFIX + "/login"
@@ -62,7 +61,6 @@ public class UserControllerTest {
                 andExpect(status().isOk()). andExpect(view().name("login"));
     }
     @Test
-    @WithMockUser(value = "pesho", roles = {"USER", "ADMIN"})
     void testRegister() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(
                 USER_CONTROLLER_PREFIX + "/register"
@@ -91,7 +89,6 @@ public class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(value = "pesho", roles = {"USER", "ADMIN"})
     void testRegisterPostFail() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(
                 USER_CONTROLLER_PREFIX + "/register"

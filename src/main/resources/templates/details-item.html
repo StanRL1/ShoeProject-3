@@ -26,6 +26,7 @@
                     <h5 th:text="|Description: *{description}|" class="card-text"></h5>
                     <h5 th:text="|Gender: *{gender.name()}|"class="card-text"></h5>
                     <h5 th:text="|Price: *{price}|" class="card-text"></h5>
+                    <a th:if="${item.addedBy!=username}" th:href="@{/items/addToCart/{id}(id=*{id})}" class="btn  btn-primary " >Add to Cart</a>
                     <a th:href="@{/comments/item/{id}(id=*{id})}" class="btn  btn-primary " >Reviews</a>
                     <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/items/delete/{id}(id=*{id})}" class="btn btn-danger" >Delete</a>
                 </div>

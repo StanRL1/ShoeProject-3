@@ -2,7 +2,9 @@ package project.service.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import project.exeptions.ObjectNotFoundException;
 import project.model.entities.Brand;
 import project.model.entities.Item;
 import project.model.services.ItemServiceModel;
@@ -60,18 +62,20 @@ public class ItemServiceImpl implements ItemService {
         }).collect(Collectors.toList());
     }
 
+
+
     @Override
     public ItemServiceModel findById(Long id) {
         return this.itemRepository.findById(id).map(item->{
             ItemServiceModel itemServiceModel=this.modelMapper.map(item,ItemServiceModel.class);
             return itemServiceModel;
-        }).orElseThrow(()->new IllegalCallerException("Item not found"));
+        }).orElseThrow(ObjectNotFoundException::new);
     }
 
     @Override
     public void deleteById(Long id) {
+        this.commentService.deleteCommentsByItemId(id);
         this.itemRepository.deleteById(id);
-       // this.commentService.deleteCommentsByItemId(id);
     }
 
     @Override

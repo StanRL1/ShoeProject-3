@@ -3,6 +3,7 @@ package project.service.impl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import project.exeptions.ObjectNotFoundException;
 import project.model.entities.Comment;
 import project.model.entities.Item;
 import project.model.services.CommentServiceModel;
@@ -42,7 +43,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void addComment(CommentServiceModel commentServiceModel) {
-        Item item =this.itemRepository.findById(commentServiceModel.getItemId()).orElse(null);
+        Item item =this.itemRepository.findById(commentServiceModel.getItemId()).orElseThrow(ObjectNotFoundException::new);;
         Comment comment=this.modelMapper.map(commentServiceModel,Comment.class);
         comment.setItem(item);
 
@@ -57,7 +58,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentServiceModel findById(Long id) {
 
-        Comment comment=this.commentRepository.findById(id).orElse(null);
+        Comment comment=this.commentRepository.findById(id).orElseThrow(ObjectNotFoundException::new);
         CommentServiceModel commentServiceModel=this.modelMapper.map(comment,CommentServiceModel.class);
         commentServiceModel.setItemId(comment.getItem().getId());
 
@@ -67,9 +68,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteCommentsByItemId(Long id) {
         if(this.commentRepository.findAllByItemId(id).size()>0)
-            this.commentRepository.findAllByItemId(id).stream().map(comment -> {
-            this.commentRepository.deleteById(comment.getId());
-            return null;
-        });
+            System.out.println();
+            List<Comment>comments =this.commentRepository.findAllByItemId(id);
+        for (Comment c:comments) {
+            this.commentRepository.delete(c);
+        }
     }
 }

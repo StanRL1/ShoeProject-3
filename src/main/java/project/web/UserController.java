@@ -18,10 +18,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.model.bindings.UserRegistrationBindingModel;
 import project.model.services.UserRegistrationServiceModel;
 import project.model.services.UserServiceModel;
+import project.model.view.ItemViewModel;
 import project.model.view.UserViewModel;
+import project.service.CartService;
 import project.service.UserService;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/users")
@@ -30,11 +35,13 @@ public class UserController {
     private Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final ModelMapper modelMapper;
     private final UserService userService;
+    private final CartService cartService;
     @Autowired
 
-    public UserController(ModelMapper modelMapper, UserService userService) {
+    public UserController(ModelMapper modelMapper, UserService userService, CartService cartService) {
         this.modelMapper = modelMapper;
         this.userService = userService;
+        this.cartService = cartService;
     }
 
 
@@ -45,10 +52,7 @@ public class UserController {
 
     @GetMapping("/login")
     public String login(){
-        LOGGER.info("LOG1");
-        LOGGER.info("LOG2");
-        LOGGER.info("LOG3");
-        LOGGER.info("LOG4");
+
 
         return "login";
     }
@@ -62,7 +66,7 @@ public class UserController {
     public String registerAndLoginUser(
             @Valid UserRegistrationBindingModel registrationBindingModel,
             BindingResult bindingResult,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes, HttpSession session) {
 
         this.userService.seedUsers();
         if (bindingResult.hasErrors()) {
@@ -82,7 +86,9 @@ public class UserController {
 
         UserRegistrationServiceModel userServiceModel = modelMapper
                 .map(registrationBindingModel, UserRegistrationServiceModel.class);
+        List<ItemViewModel> items = new ArrayList<>();
 
+        session.setAttribute("wishlist",items);
         userService.registerAndLoginUser(userServiceModel);
 
         return "redirect:/home";
@@ -100,11 +106,22 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ModelAndView profile(ModelAndView modelAndView, @AuthenticationPrincipal UserDetails principal){
+    public ModelAndView profile(ModelAndView modelAndView, @AuthenticationPrincipal UserDetails principal,HttpSession httpSession){
         UserServiceModel userServiceModel=this.userService.findByUsername(principal.getUsername());
         UserViewModel userViewModel=this.modelMapper.map(userServiceModel,UserViewModel.class);
         modelAndView.addObject("user",userViewModel);
+        List<ItemViewModel> wishlist= (List<ItemViewModel>) httpSession.getAttribute("wishlist");
+        if(wishlist==null||wishlist.size()==0){
+            modelAndView.addObject("exists",false);
+        } else{
+            modelAndView.addObject("wishlist",(List<ItemViewModel>)httpSession.getAttribute("wishlist"));
+            modelAndView.addObject("exists",true);
+
+        }
+
         modelAndView.setViewName("profile");
+        modelAndView.addObject("price",cartService.price(httpSession));
+        System.out.println();
         return modelAndView;
     }
 

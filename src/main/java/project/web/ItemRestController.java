@@ -3,6 +3,8 @@ package project.web;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +29,8 @@ public class ItemRestController {
 
     @GetMapping("/api")
     public ResponseEntity<List<ItemViewModel>> findAll(){
+
+
         List<ItemViewModel> itemViewModels=this.itemService.findAllItems().stream().map(item->{
             return this.modelMapper.map(item,ItemViewModel.class);
         }).collect(Collectors.toList());

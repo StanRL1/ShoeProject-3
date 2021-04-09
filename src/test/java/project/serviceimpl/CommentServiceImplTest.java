@@ -103,14 +103,7 @@ public class CommentServiceImplTest {
         Assertions.assertEquals(0, mockCommentRepository.count());
 
     }
-    @Test
-    public void testAddComment(){
-        CommentServiceModel commentServiceModel=new ModelMapper().map(comment1,CommentServiceModel.class);
-        serviceToTest.addComment(commentServiceModel);
-        Assertions.assertEquals(0, mockCommentRepository.count());
 
-
-    }
     @Test
     public void testDeleteByItemId(){
         this.mockCommentRepository.saveAndFlush(comment1);

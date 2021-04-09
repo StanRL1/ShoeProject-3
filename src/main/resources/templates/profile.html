@@ -37,18 +37,27 @@
                                             <h6 th:each="r:${user.roles}" th:object="${r}" th:text="${r.getRole().name()}" class="text-muted f-w-400"></h6>
                                         </div>
                                     </div>
-                                    <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Projects</h6>
+                                    <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Cart</h6>
                                     <div class="row">
-                                        <div class="col-sm-6">
-                                            <p class="m-b-10 f-w-600">Recent</p>
-                                            <h6 class="text-muted f-w-400">Some shoe</h6>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <p class="m-b-10 f-w-600">Most Viewed</p>
-                                            <h6 class="text-muted f-w-400">Some shoe</h6>
-                                        </div>
-                                    </div>
+                                        <div th:if="${exists}" th:each="i:${wishlist}" th:object="${i}" class="card" style="width: 18rem;">
+                                            <img class="card-img-top" th:src="*{imgUrl}" alt="Card image cap">
+                                            <div class="card-body bg-gray align-content-center text-center">
 
+                                                <h5 th:text="|Brand: *{brand.name}|" class="card-text"></h5>
+                                                <h5 th:text="|Model: *{name}|" class="card-text"></h5>
+                                                <h5 th:text="|Seller: *{addedBy}|" class="card-text"></h5>
+                                                <h5 th:text="|Description: *{description}|" class="card-text"></h5>
+                                                <h5 th:text="|Gender: *{gender.name()}| "class="card-text"></h5>
+                                                <h5 th:text="|Price: *{price}|" class="card-text"></h5>
+                                                <a th:href="@{/items/buy/{id}(id=*{id})}" class="btn btn-success" >Buy</a>
+                                                <a th:href="@{/items/buy/{id}(id=*{id})}" class="btn btn-danger" >Remove</a>
+                                            </div>
+                                        </div>
+                                        <h5 th:if="${!exists}">No Items</h5>
+
+
+                                    </div>
+                                        <a th:href="@{/items/buyAll}" th:text="|Buy All / Total Price: ${price} lv|" class="btn btn-danger" >Buy All</a>
                                 </div>
                             </div>
                         </div>

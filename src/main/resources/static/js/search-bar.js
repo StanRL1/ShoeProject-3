@@ -3,8 +3,6 @@ const searchBar = document.getElementById('searchInput')
 
 const allItems = [];
 
-console.log(allItems)
-
 fetch("http://localhost:8000/items/api").
 then(response => response.json()).
 then(data => {
@@ -13,7 +11,6 @@ then(data => {
     }
 })
 
-console.log(allItems)
 searchBar.addEventListener('keyup', (e) => {
     const searchingCharacters = searchBar.value.toLowerCase();
     let filteredItems = allItems.filter(item => {

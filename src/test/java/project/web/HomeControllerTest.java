@@ -20,7 +20,6 @@ public class HomeControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    @WithMockUser(value = "pesho", roles = {"USER", "ADMIN"})
     void testIndex() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(
                  "/"
