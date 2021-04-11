@@ -17,8 +17,10 @@ import project.model.services.UserRegistrationServiceModel;
 import project.model.services.UserServiceModel;
 import project.repository.UserRepository;
 import project.repository.UserRoleRepository;
+import project.service.CloudinaryService;
 import project.service.UserService;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -29,29 +31,36 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final ShoeShopUserService shoeShopUserService;
+    private final CloudinaryService cloudinaryService;
     @Autowired
 
     public UserServiceImpl(UserRoleRepository userRoleRepository,
                            UserRepository userRepository,
                            PasswordEncoder passwordEncoder,
                            ModelMapper modelMapper,
-                           ShoeShopUserService shoeShopUserService) {
+                           ShoeShopUserService shoeShopUserService, CloudinaryService cloudinaryService) {
         this.userRoleRepository = userRoleRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
         this.shoeShopUserService = shoeShopUserService;
 
+        this.cloudinaryService = cloudinaryService;
     }
     @Override
-    public void registerAndLoginUser(UserRegistrationServiceModel serviceModel) {
+    public void registerAndLoginUser(UserRegistrationServiceModel serviceModel) throws IOException {
         UserEntity newUser = modelMapper.map(serviceModel, UserEntity.class);
         newUser.setPassword(passwordEncoder.encode(serviceModel.getPassword()));
-
         UserRoleEntity userRole = userRoleRepository.
                 findByRole(UserRole.USER).orElseThrow(ObjectNotFoundException::new);
 
         newUser.addRole(userRole);
+        if(serviceModel.getImg().isEmpty()){
+            newUser.setImg("https://img.icons8.com/bubbles/100/000000/user.png");
+        }else{
+
+            newUser.setImg(this.cloudinaryService.uploadImage(serviceModel.getImg()));
+        }
 
         newUser = userRepository.save(newUser);
 
@@ -83,6 +92,8 @@ public class UserServiceImpl implements UserService {
         user.setEmail("user@user.com");
         admin.setRoles(List.of(adminRole, userRole));
         user.setRoles(List.of(userRole));
+        admin.setImg("https://img.icons8.com/bubbles/100/000000/user.png");
+        user.setImg("https://img.icons8.com/bubbles/100/000000/user.png");
 
         userRepository.saveAll(List.of(admin, user));
     }
@@ -91,9 +102,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserServiceModel findByUsername(String username) {
-        UserServiceModel userServiceModel= this.modelMapper.map(this.userRepository.findByUsername(username).orElseThrow(ObjectNotFoundException::new),UserServiceModel.class);
-
-        return userServiceModel;
+        return this.modelMapper.map(this.userRepository.findByUsername(username).orElseThrow(ObjectNotFoundException::new),UserServiceModel.class);
     }
 
 

@@ -10,8 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import project.model.entities.Brand;
 import project.model.entities.Item;
 import project.model.entities.enums.Gender;
+import project.repository.BrandRepository;
 import project.repository.ItemRepository;
 import project.repository.UserRepository;
 
@@ -26,12 +28,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ItemControllerTest {
 
     private static final String ITEM_CONTROLLER_PREFIX="/items";
+    Brand brand;
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ItemRepository itemRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private BrandRepository brandRepository;
 
     @BeforeEach
     public void setUp(){
@@ -102,20 +107,21 @@ public class ItemControllerTest {
                 andExpect(view().name("add-item"));
     }
 
-    @Test
-    @WithMockUser(value = "pesho", roles = {"USER", "ADMIN"})
-    void testAddItemsPost() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post(
-                ITEM_CONTROLLER_PREFIX + "/add"
-        ).param("name","testItem").
-                param("addedBy","pesho").
-                param("description","testItemAdd").
-                param("gender",Gender.FEMALE.name()).param("imgUrl","haoshakjls").
-                param("price","155").with(csrf())
-        ).
-                andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/home"));
-        Assertions.assertEquals(4,this.itemRepository.count());
-    }
+//    @Test
+//    @WithMockUser(value = "pesho", roles = {"USER", "ADMIN"})
+//    void testAddItemsPost() throws Exception {
+//        mockMvc.perform(MockMvcRequestBuilders.post(
+//                ITEM_CONTROLLER_PREFIX + "/add"
+//        ).param("name","testItem").
+//                param("addedBy","pesho").
+//                param("description","testItemAdd").
+//                param("gender",Gender.FEMALE.name()).param("imgUrl","haoshakjls").
+//                param("price","155").
+//                        param("brand", String.valueOf(brand)).with(csrf())
+//        ).
+//                andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/home"));
+//        Assertions.assertEquals(4,this.itemRepository.count());
+//    }
     @Test
     @WithMockUser(value = "pesho", roles = {"USER", "ADMIN"})
     void testAddItemsPostFail() throws Exception {
@@ -131,9 +137,45 @@ public class ItemControllerTest {
         Assertions.assertEquals(3,this.itemRepository.count());
     }
 
+    @Test
+    @WithMockUser(value = "pesho", roles = {"USER", "ADMIN"})
+    void testDeleteAllInCart()throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders.get(
+                ITEM_CONTROLLER_PREFIX + "/buyAll"
+                )
+        ).
+                andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/users/profile"));
+
+    }
+    @Test
+    @WithMockUser(value = "pesho", roles = {"USER", "ADMIN"})
+    void testAddToCart()throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders.get(
+                ITEM_CONTROLLER_PREFIX + "/addToCart/"+1L
+                )
+        ).
+                andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/users/profile"));
+
+    }
+//    @Test
+//    @WithMockUser(value = "pesho", roles = {"USER", "ADMIN"})
+//    void testDeleteItemFromCart()throws Exception{
+//        mockMvc.perform(MockMvcRequestBuilders.get(
+//                ITEM_CONTROLLER_PREFIX + "/buy/"+1L
+//                )
+//        ).
+//                andExpect(status().is3xxRedirection())
+//                .andExpect(redirectedUrl("/users/profile"));
+//
+//    }
 
     @BeforeEach
     public void init(){
+        brand=new Brand();
+        brand.setName("Nike");
+        brandRepository.saveAndFlush(brand);
         Item item1 = new Item();
         item1.setName("item1");
         item1.setAddedBy("pesho");
@@ -142,6 +184,7 @@ public class ItemControllerTest {
         item1.setImgUrl("1111111111111");
         item1.setPrice(BigDecimal.TEN);
         item1.setId(1);
+        item1.setBrand(brand);
         Item item2 = new Item();
         item2.setName("item2");
         item2.setAddedBy("pesho");
@@ -150,6 +193,7 @@ public class ItemControllerTest {
         item2.setImgUrl("222222222222");
         item2.setPrice(BigDecimal.TEN);
         item2.setId(2);
+        item2.setBrand(brand);
         Item item3 = new Item();
         item2.setName("item2");
         item2.setAddedBy("pesho");
@@ -158,7 +202,12 @@ public class ItemControllerTest {
         item2.setImgUrl("222222222222");
         item2.setPrice(BigDecimal.TEN);
         item2.setId(2);
-
+        item3.setBrand(brand);
+//
+//        itemRepository.saveAndFlush(item1);
+//
+//        itemRepository.saveAndFlush(item2);
+//        itemRepository.saveAndFlush(item3);
 
 
     }

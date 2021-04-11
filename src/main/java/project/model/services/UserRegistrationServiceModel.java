@@ -1,5 +1,7 @@
 package project.model.services;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -17,7 +19,18 @@ public class UserRegistrationServiceModel {
     @NotEmpty
     @Size(min = 5, max = 20)
     private String password;
+    private MultipartFile img;
 
+    public UserRegistrationServiceModel() {
+    }
+
+    public MultipartFile getImg() {
+        return img;
+    }
+
+    public void setImg(MultipartFile img) {
+        this.img = img;
+    }
 
     public String getUsername() {
         return username;

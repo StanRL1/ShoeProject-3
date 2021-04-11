@@ -21,7 +21,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Brand findByUsername(String username) {
-        return this.brandRepository.findByName(username).orElseThrow(ObjectNotFoundException::new);
+        return this.brandRepository.findByName(username).orElse(null);
     }
 
     @Override

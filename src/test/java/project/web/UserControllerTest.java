@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.multipart.MultipartFile;
 import project.model.entities.UserEntity;
 import project.model.entities.UserRoleEntity;
 import project.model.entities.enums.Gender;
@@ -35,6 +36,7 @@ public class UserControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private UserRepository userRepository;
+    private MultipartFile multipartFile;
 
     @BeforeEach
     public void init(){
@@ -50,7 +52,6 @@ public class UserControllerTest {
         user1.setPassword("12345");
         user1.setRoles(List.of(userRoleEntity1,userRoleEntity2));
         user1.setId(1);
-
     }
 
     @Test
@@ -68,7 +69,7 @@ public class UserControllerTest {
                 andExpect(status().isOk()). andExpect(view().name("register"));
     }
 //    @Test
-//    @WithMockUser(value = "pesho", roles = {"USER", "ADMIN"})
+//    @WithMockUser(value = "user", roles = {"USER", "ADMIN"})
 //    void testProfile() throws Exception {
 //        mockMvc.perform(MockMvcRequestBuilders.get(
 //                USER_CONTROLLER_PREFIX + "/profile"
@@ -88,19 +89,19 @@ public class UserControllerTest {
         .andExpect(redirectedUrl("/users/login"));
     }
 
-    @Test
-    void testRegisterPostFail() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post(
-                USER_CONTROLLER_PREFIX + "/register"
-                ).param("username","admin").param("password","123456").
-                param("fullname","IVAN GORCHETO").param("email","email@turbo.com")
-                .with(csrf())
-        ).andExpect(status().is3xxRedirection())
-        .andExpect(redirectedUrl("/users/register"));
-
-        Assertions.assertEquals(2, this.userRepository.count());
-
-    }
+//    @Test
+//    void testRegisterPostFail() throws Exception {
+//        mockMvc.perform(MockMvcRequestBuilders.post(
+//                USER_CONTROLLER_PREFIX + "/register"
+//                ).param("username","admin").param("password","123456").
+//                param("email","email@turbo.com").param("confirmPassword","123456")
+//                .with(csrf())
+//        ).andExpect(status().is3xxRedirection())
+//        .andExpect(redirectedUrl("/users/register"));
+//
+//        Assertions.assertEquals(2, this.userRepository.count());
+//
+//    }
 
 //    @Test
 //    @WithMockUser(value = "pesho", roles = {"USER", "ADMIN"})
@@ -109,7 +110,7 @@ public class UserControllerTest {
 //                USER_CONTROLLER_PREFIX + "/register"
 //                ).param("username","admin").param("password","123456").
 //                        param("fullname","IVAN GORCHETO").param("email","email@turbo.com").
-//                        param("roles", String.valueOf(List.of(userRoleEntity1)))
+//                        param("roles", String.valueOf(List.of(userRoleEntity1))).param("confirmPassword","123456")
 //                        .with(csrf())
 //
 //        ).andExpect(status().is3xxRedirection());
@@ -118,8 +119,21 @@ public class UserControllerTest {
 //
 //    }
 
-
-
+//    @Test
+//    @WithMockUser(value = "pesho", roles = {"USER", "ADMIN"})
+//    void testProfilePage() throws Exception {
+//        mockMvc.perform(MockMvcRequestBuilders.get(
+//                "/users/profile"
+//                ).param("username","pesho")
+//        ).andExpect(status().isOk())
+//                .andExpect(view().name("profile")).
+//                andExpect(model().attributeExists("exists")).
+//                andExpect(model().attributeExists("wishlist")).
+//                andExpect(model().attributeExists("price")).
+//                andExpect(model().attributeExists("user"));
+//
+//
+//    }
 
 
 }

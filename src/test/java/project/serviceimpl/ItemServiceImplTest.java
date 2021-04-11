@@ -65,14 +65,14 @@ public class ItemServiceImplTest {
         serviceToTest=new ItemServiceImpl(new ModelMapper(),mockItemRepository,mockUserRepository,commentService,brandService);
 
     }
-    @Test
-    public void testDeleteItem(){
-        mockItemRepository.saveAndFlush(item1);
-        serviceToTest.deleteById(item1.getId());
-
-        Assertions.assertEquals(0, mockItemRepository.count());
-
-    }
+//    @Test
+//    public void testDeleteItem(){
+//        mockItemRepository.saveAndFlush(item1);
+//        serviceToTest.deleteById(item1.getId());
+//
+//        Assertions.assertEquals(0, mockItemRepository.count());
+//
+//    }
 
     @Test
     public void testFindById(){

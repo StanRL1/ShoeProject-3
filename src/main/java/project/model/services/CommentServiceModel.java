@@ -11,6 +11,7 @@ public class CommentServiceModel {
     @NotNull
     @Size(min=1,max=150)
     private String content;
+    @NotNull
     private String writer;
     @NotNull
     private Long itemId;

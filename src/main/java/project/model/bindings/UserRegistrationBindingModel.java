@@ -1,9 +1,11 @@
 package project.model.bindings;
 
+import org.springframework.web.multipart.MultipartFile;
 import project.model.validators.FieldMatch;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @FieldMatch(
@@ -26,49 +28,56 @@ public class UserRegistrationBindingModel {
     private String password;
     @NotEmpty
     private String confirmPassword;
+    private MultipartFile img;
+
+    public UserRegistrationBindingModel() {
+    }
 
     public String getUsername() {
         return username;
     }
 
-    public UserRegistrationBindingModel setUsername(String username) {
+    public void setUsername(String username) {
         this.username = username;
-        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public UserRegistrationBindingModel setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
-        return this;
     }
 
     public String getFullname() {
         return fullname;
     }
 
-    public UserRegistrationBindingModel setFullname(String fullname) {
+    public void setFullname(String fullname) {
         this.fullname = fullname;
-        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public UserRegistrationBindingModel setPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
-        return this;
     }
 
     public String getConfirmPassword() {
         return confirmPassword;
     }
 
-    public UserRegistrationBindingModel setConfirmPassword(String confirmPassword) {
+    public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
-        return this;
+    }
+
+    public MultipartFile getImg() {
+        return img;
+    }
+
+    public void setImg(MultipartFile img) {
+        this.img = img;
     }
 }

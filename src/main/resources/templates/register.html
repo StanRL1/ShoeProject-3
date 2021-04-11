@@ -14,7 +14,7 @@
 <main>
     <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Register</span></h1>
     <hr class="hr-3"/>
-    <form class="mx-auto mb-5 text-center w-25 bg-dark p-3 rounded"  th:action="@{/users/register}"
+    <form  enctype="multipart/form-data" class="mx-auto mb-5 text-center w-25 bg-dark p-3 rounded"  th:action="@{/users/register}"
           th:object="${registrationBindingModel}" method="POST">
         <div class="form-group">
             <div class="label-holder textCol d-flex justify-content-center">
@@ -61,8 +61,11 @@
             <small id="fullNameError"
                    class="invalid-feedback
                    text-light form-text bg-danger rounded">Full name length must be more than 3 characters</small>
-            </div>
+        </div>
 
+        <div class="form-group">
+            <label for="add-title-image" class="h4 mb-2 text-white" >Picture</label>
+            <input type="file" class="form-control-file" id="add-title-image" name="img" >
         </div>
         <div class="form-group">
             <div class="label-holder text-white textCol d-flex justify-content-center">
@@ -76,6 +79,7 @@
                     aria-describedby="passwordHelpInline"/>
             <small class="invalid-feedback text-danger"> Password length must be between 5 and 20 characters and passwords should match.</small>
         </div>
+
         <div class="form-group">
             <div class="label-holder text-white textCol d-flex justify-content-center">
                 <label for="confirmPassword" class="h4 mb-2">Confirm Password</label>

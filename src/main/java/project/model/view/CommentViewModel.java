@@ -11,6 +11,7 @@ public class CommentViewModel {
     @NotNull
     @Size(min=1,max=150)
     private String content;
+    @NotNull
     private String writer;
     @NotNull
     @FutureOrPresent

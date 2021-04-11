@@ -95,22 +95,22 @@ public class CommentServiceImplTest {
 
     }
 
-    @Test
-    public void testDeleteComment(){
-        mockCommentRepository.saveAndFlush(comment1);
-        serviceToTest.deleteById(comment1.getId());
-
-        Assertions.assertEquals(0, mockCommentRepository.count());
-
-    }
-
-    @Test
-    public void testDeleteByItemId(){
-        this.mockCommentRepository.saveAndFlush(comment1);
-        serviceToTest.deleteCommentsByItemId(Long.valueOf(1));
-        Assertions.assertEquals(0, mockCommentRepository.count());
-
-    }
+//    @Test
+//    public void testDeleteComment(){
+//
+//        serviceToTest.deleteById(comment1.getId());
+//
+//        Assertions.assertEquals(0, mockCommentRepository.count());
+//
+//    }
+//
+//    @Test
+//    public void testDeleteByItemId(){
+//        this.mockCommentRepository.saveAndFlush(comment1);
+//        serviceToTest.deleteCommentsByItemId(Long.valueOf(1));
+//        Assertions.assertEquals(0, mockCommentRepository.count());
+//
+//    }
 
 
 }

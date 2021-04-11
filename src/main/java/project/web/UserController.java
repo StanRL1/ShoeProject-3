@@ -25,6 +25,7 @@ import project.service.UserService;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,12 +63,11 @@ public class UserController {
         return "register";
     }
 
-    @PostMapping("/register")
+    @PostMapping(value = "/register", consumes = {"multipart/form-data"})
     public String registerAndLoginUser(
             @Valid UserRegistrationBindingModel registrationBindingModel,
             BindingResult bindingResult,
-            RedirectAttributes redirectAttributes, HttpSession session) {
-
+            RedirectAttributes redirectAttributes, HttpSession session) throws IOException {
         this.userService.seedUsers();
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("registrationBindingModel", registrationBindingModel);
@@ -118,10 +118,8 @@ public class UserController {
             modelAndView.addObject("exists",true);
 
         }
-
         modelAndView.setViewName("profile");
         modelAndView.addObject("price",cartService.price(httpSession));
-        System.out.println();
         return modelAndView;
     }
 

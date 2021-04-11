@@ -17,9 +17,19 @@ public class UserServiceModel {
     private String fullname;
     @NotNull
     private List<UserRoleEntity> roles;
+    @NotNull
+    private String img;
 
 
     public UserServiceModel() {
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public String getUsername() {

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import project.exeptions.ObjectNotFoundException;
 import project.model.entities.Brand;
 import project.model.entities.Item;
+import project.model.services.BrandServiceModel;
 import project.model.services.ItemServiceModel;
 import project.repository.BrandRepository;
 import project.repository.CommentRepository;
@@ -42,11 +43,13 @@ public class ItemServiceImpl implements ItemService {
         Item item=this.modelMapper.map(itemServiceModel,Item.class);
 
         Brand brand=this.brandService.findByUsername("Nike");
+        System.out.println();
         if(brand!=null){
             item.setBrand(brand);
         }else{
             brand=new Brand();
             brand.setName("Nike");
+            brandService.saveBrand(this.modelMapper.map(brand,BrandServiceModel.class));
             item.setBrand(brand);
         }
 

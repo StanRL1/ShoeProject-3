@@ -14,6 +14,7 @@ import project.model.entities.enums.UserRole;
 import project.model.services.UserServiceModel;
 import project.repository.UserRepository;
 import project.repository.UserRoleRepository;
+import project.service.impl.CloudinaryServiceImpl;
 import project.service.impl.ShoeShopUserService;
 import project.service.impl.UserServiceImpl;
 
@@ -29,6 +30,8 @@ public class UserServiceImplTest {
 
 
     private UserServiceImpl serviceToTest;
+    private CloudinaryServiceImpl cloudinaryService;
+
     @Mock
     private UserRoleRepository mockRoleRepo;
     @Mock
@@ -55,7 +58,7 @@ public class UserServiceImplTest {
         user1.setRoles(List.of(roleUser, roleAdmin));
 
 
-        serviceToTest= new UserServiceImpl(mockRoleRepo,mockUserRepo,passwordEncoder,new ModelMapper(),shoeShopUserService);
+        serviceToTest= new UserServiceImpl(mockRoleRepo,mockUserRepo,passwordEncoder,new ModelMapper(),shoeShopUserService, cloudinaryService);
 
     }
 

@@ -14,10 +14,20 @@ public class UserViewModel {
     private String email;
     @NotNull
     private String fullname;
+    @NotNull
+    private String img;
 
     private List<UserRoleEntity> roles;
 
     public UserViewModel() {
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public String getUsername() {
