@@ -2,20 +2,20 @@ package project.service.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import project.exeptions.ObjectNotFoundException;
 import project.model.entities.Brand;
 import project.model.entities.Item;
+import project.model.entities.LogEntity;
 import project.model.services.BrandServiceModel;
 import project.model.services.ItemServiceModel;
-import project.repository.BrandRepository;
-import project.repository.CommentRepository;
 import project.repository.ItemRepository;
+import project.repository.LogRepository;
 import project.repository.UserRepository;
 import project.service.BrandService;
 import project.service.CommentService;
 import project.service.ItemService;
+import project.service.LogService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,14 +27,16 @@ public class ItemServiceImpl implements ItemService {
     private final CommentService commentService;
     private final UserRepository userRepository;
     private final BrandService brandService;
+    private final LogRepository logRepository;
     @Autowired
 
-    public ItemServiceImpl(ModelMapper modelMapper, ItemRepository itemRepository, UserRepository userRepository,CommentService commentService,BrandService brandService) {
+    public ItemServiceImpl(ModelMapper modelMapper, ItemRepository itemRepository, UserRepository userRepository, CommentService commentService, BrandService brandService, LogRepository logRepository) {
         this.modelMapper = modelMapper;
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
         this.commentService=commentService;
         this.brandService=brandService;
+        this.logRepository = logRepository;
     }
 
 
@@ -43,7 +45,7 @@ public class ItemServiceImpl implements ItemService {
         Item item=this.modelMapper.map(itemServiceModel,Item.class);
 
         Brand brand=this.brandService.findByUsername("Nike");
-        System.out.println();
+
         if(brand!=null){
             item.setBrand(brand);
         }else{
@@ -77,6 +79,13 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void deleteById(Long id) {
+        List<LogEntity> logs=this.logRepository.findAll();
+
+        for (LogEntity log:logs) {
+            if(log.getItem().getId()==id){
+                this.logRepository.delete(log);
+            }
+        }
         this.commentService.deleteCommentsByItemId(id);
         this.itemRepository.deleteById(id);
     }

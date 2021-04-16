@@ -9,13 +9,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.model.bindings.UserRegistrationBindingModel;
+import project.model.bindings.UserUpdateBindingModel;
 import project.model.services.UserRegistrationServiceModel;
 import project.model.services.UserServiceModel;
 import project.model.view.ItemViewModel;
@@ -121,6 +119,44 @@ public class UserController {
         modelAndView.setViewName("profile");
         modelAndView.addObject("price",cartService.price(httpSession));
         return modelAndView;
+    }
+
+    @GetMapping("/profile/update")
+    public ModelAndView profileUpdate(@AuthenticationPrincipal UserDetails principal,ModelAndView modelAndView){
+
+
+        modelAndView.addObject("user",this.modelMapper.map(this.userService.findByUsername(principal.getUsername()),UserViewModel.class));
+
+        modelAndView.setViewName("profile-update");
+        return modelAndView;
+    }
+
+
+    @PatchMapping("/profile/update/{id}")
+    public String updateConfirm(@PathVariable Long id, UserUpdateBindingModel userUpdateBindingModel,BindingResult bindingResult,RedirectAttributes attributes,@AuthenticationPrincipal UserDetails principal) throws IOException {
+
+        if(bindingResult.hasErrors()){
+
+            attributes.addFlashAttribute("user", this.modelMapper.map(this.userService.findByUsername(principal.getUsername()),UserViewModel.class));
+            attributes.addFlashAttribute(
+                    "org.springframework.validation.BindingResult.userUpdateBindingModel", bindingResult);
+
+            return "redirect:/users/profile/update";
+        }
+
+        if(!userUpdateBindingModel.getUsername().equals(principal.getUsername())) {
+            if (userService.userNameExists(userUpdateBindingModel.getUsername())) {
+                attributes.addFlashAttribute("user", this.modelMapper.map(this.userService.findByUsername(principal.getUsername()), UserViewModel.class));
+                attributes.addFlashAttribute("userExistsError", true);
+
+                return "redirect:/users/profile/update";
+            }
+        }
+        UserRegistrationServiceModel userServiceMode=this.modelMapper.map(userUpdateBindingModel,UserRegistrationServiceModel.class);
+
+        this.userService.updateUser(userServiceMode,id);
+
+        return "redirect:/home";
     }
 
 }

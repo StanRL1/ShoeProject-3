@@ -9,10 +9,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import project.model.entities.Comment;
 import project.model.entities.Item;
+import project.model.entities.UserEntity;
+import project.model.entities.UserRoleEntity;
 import project.model.entities.enums.Gender;
+import project.model.entities.enums.UserRole;
 import project.model.services.CommentServiceModel;
 import project.repository.CommentRepository;
 import project.repository.ItemRepository;
+import project.repository.UserRepository;
 import project.service.impl.CommentServiceImpl;
 
 import java.math.BigDecimal;
@@ -26,18 +30,30 @@ public class CommentServiceImplTest {
 
     private Item item1,item2;
     private Comment comment1,comment2;
-
     private CommentServiceImpl serviceToTest;
     @Mock
     CommentRepository mockCommentRepository;
 
     @Mock
     ItemRepository mockItemRepository;
+    @Mock
+    UserRepository userRepository;
 
 
 
     @BeforeEach
     public void setUp() {
+        UserRoleEntity adminRole = new UserRoleEntity().setRole(UserRole.ADMIN);
+        UserRoleEntity userRole = new UserRoleEntity().setRole(UserRole.USER);
+
+        UserEntity admin = new UserEntity();
+        admin.setUsername("admin");
+        admin.setFullname("Admin Adminov");
+        admin.setPassword("123456");
+        admin.setEmail("admin@admin.com");
+        admin.setRoles(List.of(adminRole, userRole));
+        admin.setImg("https://img.icons8.com/bubbles/100/000000/user.png");
+
         item1 = new Item();
         item1.setName("item1");
         item1.setAddedBy("addedby1");
@@ -50,7 +66,7 @@ public class CommentServiceImplTest {
         comment1=new Comment();
         comment1.setItem(item1);
         comment1.setContent("11111111111111111111");
-        comment1.setWriter("11111111111");
+        comment1.setWriter(admin);
 
         item2 = new Item();
         item2.setName("item2");
@@ -64,10 +80,10 @@ public class CommentServiceImplTest {
         comment2=new Comment();
         comment2.setItem(item2);
         comment2.setContent("222222222222");
-        comment2.setWriter("22222222");
+        comment2.setWriter(admin);
 
 
-        serviceToTest=new CommentServiceImpl(mockCommentRepository,new ModelMapper(),mockItemRepository);
+        serviceToTest=new CommentServiceImpl(mockCommentRepository,new ModelMapper(),mockItemRepository, userRepository);
     }
 
     @Test
@@ -78,7 +94,6 @@ public class CommentServiceImplTest {
 
         Assertions.assertEquals(comment1.getContent(),testComment.getContent());
         Assertions.assertEquals(comment1.getItem().getId(),testComment.getItemId());
-        Assertions.assertEquals(comment1.getWriter(),testComment.getWriter());
 
     }
     @Test
@@ -89,7 +104,6 @@ public class CommentServiceImplTest {
         System.out.println();
         Assertions.assertEquals(1, testComments.size());
         Assertions.assertEquals(comment1.getContent(),testComments.get(0).getContent());
-        Assertions.assertEquals(comment1.getWriter(),testComments.get(0).getWriter());
         Assertions.assertEquals(comment1.getItem().getId(),testComments.get(0).getItemId());
 
 

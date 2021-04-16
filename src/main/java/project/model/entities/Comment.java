@@ -13,8 +13,8 @@ public class Comment extends BaseEntity {
     @Column(name="content",nullable = false)
     @Size(min=1,max=150)
     private String content;
-    @Column(name="writer",nullable = false)
-    private String writer;
+    @ManyToOne
+    private UserEntity writer;
     @ManyToOne
     private Item item;
     @FutureOrPresent
@@ -39,11 +39,11 @@ public class Comment extends BaseEntity {
         this.content = content;
     }
 
-    public String getWriter() {
+    public UserEntity getWriter() {
         return writer;
     }
 
-    public void setWriter(String writer) {
+    public void setWriter(UserEntity writer) {
         this.writer = writer;
     }
 

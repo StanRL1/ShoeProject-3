@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{/fragments/head}"></th:block>
+</head>
+<body>
+<header>
+    <nav class="navbar bg-dark navbar-expand-lg navbar-background bg-dark ">
+        <th:block th:include="~{/fragments/nav}"></th:block>
+        </div>
+    </nav>
+</header>
+<main >
+    <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Update Profile</span></h1>
+    <hr class="hr-3"/>
+    <form  th:object="${user}" enctype="multipart/form-data" class="mx-auto mb-5 text-center w-25 bg-dark p-3 rounded"
+           th:action="@{/users/profile/update/{id}(id = ${user.id})}"
+            th:method="PATCH">
+        <div class="form-group">
+            <div class="label-holder textCol d-flex justify-content-center">
+                <label for="username" class="h4 mb-2 text-white">Username</label>
+            </div>
+            <input name="username"
+                   th:value="*{username}"
+                   th:errorclass="is-invalid"
+                   required minlength="5" maxlength="20"
+                   type="text"
+                   id="username"
+                   class="form-control"
+                   aria-describedby="usernameHelpInline">
+            <small class="invalid-feedback text-danger">Username should be between 5 and 20 symbols</small>
+            <small th:if="${userExistsError}" id="usernameUniqueError"
+                   class="text-light form-text bg-danger rounded">Username is already occupied</small>
+        </div>
+        <div class="form-group">
+            <div class="label-holder text-white textCol d-flex justify-content-center">
+                <label for="email" class="h4 mb-2">Email</label>
+            </div>
+            <input
+                    name="email"
+                    th:value="*{email}"
+                    th:errorclass="is-invalid" required
+                    type="email"
+                    id="email"
+                    class="form-control"
+                    aria-describedby="emailHelpInline"/>
+            <small class="invalid-feedback text-danger">Must be valid email</small>
+        </div>
+        <div class="col-auto">
+            <label for="inputFullName" class="h4 mb-2 text-white">Full Name</label>
+        </div>
+        <div class="form-group">
+            <input name="fullname"
+                   th:value="*{fullname}"
+                   th:errorclass="is-invalid"
+                   required minlength="5" maxlength="20"
+                   type="text"
+                   id="inputFullName"
+                   class="form-control"
+                   aria-describedby="fullNameHelpInline">
+            <small id="fullNameError"
+                   class="invalid-feedback
+                   text-light form-text bg-danger rounded">Full name length must be more than 3 characters</small>
+        </div>
+
+        <div class="form-group">
+            <label for="add-title-image" class="h4 mb-2 text-white" >Picture</label>
+            <input type="file" class="form-control-file" id="add-title-image" name="img" >
+        </div>
+        <div class="button-holder d-flex justify-content-center">
+            <button type="submit" class="btn btn-secondary text-white mb-3" value="Update"\>Update</button>
+        </div>
+    </form>
+</main>
+<footer class="footer bg-dark  py-2">
+    <th:block th:include="~{/fragments/footer}"></th:block>
+</footer>
+</body>
+</html>
+</title>
+</head>
+<body>
+
+</body>
+</html>

@@ -8,6 +8,8 @@ import java.util.List;
 
 public class UserViewModel {
     @NotNull
+    private Long id;
+    @NotNull
     private String username;
     @NotNull
     @Email
@@ -20,6 +22,14 @@ public class UserViewModel {
     private List<UserRoleEntity> roles;
 
     public UserViewModel() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getImg() {

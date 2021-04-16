@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import project.service.UserService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -86,13 +88,20 @@ public class UserServiceImpl implements UserService {
 
         userRoleRepository.saveAll(List.of(adminRole, userRole));
 
-        UserEntity admin = new UserEntity().setUsername("admin").setFullname("Admin Adminov").setPassword(passwordEncoder.encode("topsecret"));
-        UserEntity user = new UserEntity().setUsername("user").setFullname("Bai Ivan").setPassword(passwordEncoder.encode("topsecret"));
+        UserEntity admin = new UserEntity();
+        admin.setUsername("admin");
+        admin.setFullname("Admin Adminov");
+        admin.setPassword(passwordEncoder.encode("topsecret"));
         admin.setEmail("admin@admin.com");
-        user.setEmail("user@user.com");
         admin.setRoles(List.of(adminRole, userRole));
-        user.setRoles(List.of(userRole));
         admin.setImg("https://img.icons8.com/bubbles/100/000000/user.png");
+
+        UserEntity user = new UserEntity();
+        user.setUsername("user");
+        user.setFullname("Bai Ivan");
+        user.setPassword(passwordEncoder.encode("topsecret"));
+        user.setEmail("user@user.com");
+        user.setRoles(List.of(userRole));
         user.setImg("https://img.icons8.com/bubbles/100/000000/user.png");
 
         userRepository.saveAll(List.of(admin, user));
@@ -100,9 +109,39 @@ public class UserServiceImpl implements UserService {
 
     }
 
+
     @Override
     public UserServiceModel findByUsername(String username) {
         return this.modelMapper.map(this.userRepository.findByUsername(username).orElseThrow(ObjectNotFoundException::new),UserServiceModel.class);
+    }
+
+    @Override
+    public List<UserServiceModel> findAll() {
+        List<UserServiceModel> userServiceModels=this.userRepository.findAll().stream().
+                map(user-> this.modelMapper.map(user,UserServiceModel.class)).collect(Collectors.toList());
+
+        return userServiceModels;
+    }
+
+    @Override
+    public UserServiceModel findById(Long id) {
+        return this.modelMapper.map(this.userRepository.findById(id),UserServiceModel.class);
+    }
+
+    @Override
+    public void updateUser(UserRegistrationServiceModel userServiceModel,Long id) throws IOException {
+
+        UserEntity userEntity=this.userRepository.findById(id).orElseThrow(ObjectNotFoundException::new);
+        System.out.println();
+        userEntity.setUsername(userServiceModel.getUsername());
+        userEntity.setEmail(userServiceModel.getEmail());
+        userEntity.setFullname(userServiceModel.getFullname());
+        if(!userServiceModel.getImg().isEmpty()){
+            userEntity.setImg(this.cloudinaryService.uploadImage(userServiceModel.getImg()));
+        }
+        this.userRepository.saveAndFlush(userEntity);
+
+
     }
 
 
@@ -110,4 +149,6 @@ public class UserServiceImpl implements UserService {
     public boolean userNameExists(String username) {
         return this.userRepository.findByUsername(username).isPresent();
     }
+
+
 }

@@ -9,6 +9,8 @@ import java.util.List;
 
 public class UserServiceModel {
     @NotNull
+    private Long id;
+    @NotNull
     private String username;
     @NotNull
     private String email;
@@ -22,6 +24,14 @@ public class UserServiceModel {
 
 
     public UserServiceModel() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getImg() {

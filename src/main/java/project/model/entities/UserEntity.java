@@ -42,36 +42,32 @@ public class UserEntity extends BaseEntity {
         return username;
     }
 
-    public UserEntity setUsername(String name) {
-        this.username = name;
-        return this;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public UserEntity setPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
-        return this;
     }
 
     public String getFullname() {
         return fullname;
     }
 
-    public UserEntity setFullname(String fullname) {
+    public void setFullname(String fullname) {
         this.fullname = fullname;
-        return this;
     }
 
     public List<UserRoleEntity> getRoles() {
         return roles;
     }
 
-    public UserEntity setRoles(List<UserRoleEntity> roles) {
+    public void setRoles(List<UserRoleEntity> roles) {
         this.roles = roles;
-        return this;
     }
 
     public UserEntity addRole(UserRoleEntity roleEntity) {

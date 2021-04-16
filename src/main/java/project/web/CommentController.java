@@ -36,6 +36,7 @@ public class CommentController {
         List<CommentViewModel> commentViewModelList=this.commentService.findCommentsById(id).stream()
                 .map(comment->{
                     CommentViewModel commentViewModel=this.modelMapper.map(comment,CommentViewModel.class);
+                    commentViewModel.setWriter(comment.getWriter());
                     return commentViewModel;
                 }).collect(Collectors.toList());
         modelAndView.addObject("comments",commentViewModelList);
